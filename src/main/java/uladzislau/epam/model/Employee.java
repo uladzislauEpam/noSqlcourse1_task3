@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Employee {
     private String name;
     private String skills;
-    private String position;
+    private String verified;
 
     @JsonProperty("experience")
     private int experience;
@@ -13,10 +13,10 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, String skills, String position, int experience) {
+    public Employee(String name, String skills, String verified, int experience) {
         this.name = name;
         this.skills = skills;
-        this.position = position;
+        this.verified = verified;
         this.experience = experience;
     }
 
@@ -36,12 +36,12 @@ public class Employee {
         this.skills = skills;
     }
 
-    public String getPosition() {
-        return position;
+    public String getVerified() {
+        return verified;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setVerified(String verified) {
+        this.verified = verified;
     }
 
     public int getExperience() {
