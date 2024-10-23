@@ -3,9 +3,14 @@ package uladzislau.epam.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Employee {
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("skills")
     private String skills;
-    private String verified;
+
+    @JsonProperty("verified")
+    private boolean verified;
 
     @JsonProperty("experience")
     private int experience;
@@ -13,7 +18,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, String skills, String verified, int experience) {
+    public Employee(String name, String skills, boolean verified, int experience) {
         this.name = name;
         this.skills = skills;
         this.verified = verified;
@@ -36,11 +41,11 @@ public class Employee {
         this.skills = skills;
     }
 
-    public String getVerified() {
+    public boolean getVerified() {
         return verified;
     }
 
-    public void setVerified(String verified) {
+    public void setVerified(boolean verified) {
         this.verified = verified;
     }
 

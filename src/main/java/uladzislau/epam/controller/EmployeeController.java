@@ -1,5 +1,7 @@
 package uladzislau.epam.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,15 @@ public class EmployeeController {
             return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error retrieving employees: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/javaAPI/getEmployees")
+    public ResponseEntity<List<Employee>> getAllEmployeesJavaAPI() {
+        try {
+            return new ResponseEntity<>(employeeService.getAllEmployeesJavaAPI(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

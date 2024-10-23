@@ -1,5 +1,9 @@
 package uladzislau.epam.service;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.*;
@@ -9,14 +13,20 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import uladzislau.epam.model.Employee;
+import uladzislau.epam.model.Employee;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService {
     private static final String BASE_URL_CLEAR = "http://localhost:9200/";
     private static final String BASE_URL = "http://localhost:9200/employees/_doc/";
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final ElasticsearchClient client; // For Java API Client
+
+    public EmployeeService(ElasticsearchClient client) {this.client = client;}
 
     public String getAllEmployees() throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
@@ -60,5 +70,21 @@ public class EmployeeService {
             httpPost.setEntity(new StringEntity(jsonQuery));
             return httpClient.execute(httpPost, response -> EntityUtils.toString(response.getEntity()));
         }
+    }
+
+    //Java API Client
+    public List<Employee> getAllEmployeesJavaAPI() throws IOException {
+        SearchRequest request = SearchRequest.of(s -> s
+            .index("employees")
+            .query(q -> q
+                .matchAll(m -> m)
+            )
+        );
+        SearchResponse<Employee> response = client.search(request, Employee.class);
+        List<Employee> employees = new ArrayList<>();
+        for (Hit<Employee> hit : response.hits().hits()) {
+            employees.add(hit.source());
+        }
+        return employees;
     }
 }
